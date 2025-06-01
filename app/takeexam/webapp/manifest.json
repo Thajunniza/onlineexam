@@ -1,0 +1,135 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "com.sap.takeexam",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.17.6",
+      "toolsId": "67b14bea-1244-4c51-a3d4-024350b19eb2"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/online-exam/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.136.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.sap.takeexam.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.sap.takeexam.view",
+        "async": true,
+        "viewPath": "com.sap.takeexam.view"
+      },
+      "routes": [
+        {
+          "name": "RouteHome",
+          "pattern": ":?query:",
+          "target": [
+            "TargetHome"
+          ]
+        },
+        {
+          "name": "Exam",
+          "pattern": "Exam/{examId}",
+          "target": "Exam"
+        },
+        {
+          "name": "Result",
+          "pattern": "Result",
+          "target": "Result"
+        }
+      ],
+      "targets": {
+        "TargetHome": {
+          "id": "Home",
+          "name": "Home"
+        },
+         "Exam": {
+          "id": "Exam",
+          "name": "Exam"
+        },
+         "Result": {
+          "id": "Result",
+          "name": "Result"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.sap.takeexam.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

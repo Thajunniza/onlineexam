@@ -1,0 +1,12 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+>
+<RadioButtonGroup xmlns="sap.m"
+  selectedIndex="{/userAnswers/${ID}}" columns="1">
+  <items>
+    <RadioButton text="{ans}" selected="{isCorrect}" items="{answers}" />
+  </items>
+</RadioButtonGroup>
+
+</c:FragmentDefinition>

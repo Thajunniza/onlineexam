@@ -1,0 +1,15 @@
+<c:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+>
+    <VBox
+        xmlns="sap.m"
+        items="{answers}"
+    >
+        <CheckBox
+            text="{ans}"
+            selected="false"
+            select="onMultiSelect"
+        />
+    </VBox>
+</c:FragmentDefinition>

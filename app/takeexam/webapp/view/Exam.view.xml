@@ -1,0 +1,96 @@
+<mvc:View
+  controllerName="com.sap.takeexam.controller.Exam"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+>
+  <Page
+    title="{i18n>examPageTitle}"
+    showNavButton="false"
+  >
+    <content>
+      <VBox class="sapUiMediumMargin">
+        <HBox
+          justifyContent="SpaceBetween"
+          class="sapUiSmallMarginBottom"
+        >
+          <Title
+            text="{i18n>questionTitle} ( {examModel>/currentQues} out of {examModel>/totalQues} )"
+          />
+        </HBox>
+
+        <Panel>
+          <content>
+            <!-- Element Binding to the Exam entity -->
+            <VBox id="__ExamVBox" binding="{examModel>/examData}">
+              <VBox id="__QuesVBox">
+
+                <Text
+                  text="{examModel>ID}. {examModel>ques}"
+                  class="sapUiSmallMarginTopBottom"
+                />
+                <Text
+                  text="There are correct {examModel>correctAns} answers"
+                  class="sapUiSmallMarginTopBottom"
+                />
+
+                <!-- List for Multiple Answers (CheckBoxes) -->
+                <List
+                  items="{examModel>answers}"
+                  mode="None"
+                  visible="{= ${examModel>correctAns} > 1 }"
+                >
+                  <CustomListItem>
+                    <CheckBox
+                      text="{examModel>ans}"
+                      select="onMultiSelect"
+                      selected="{examModel>selected}"
+                      valueState="{= ${examModel>isCorrect} ? 'Success' : 'None' }"
+                    />
+                  </CustomListItem>
+                </List>
+
+                <!-- List for Single Answer (RadioButtons) -->
+                <List
+                  items="{examModel>answers}"
+                  mode="None"
+                  visible="{= ${examModel>correctAns} === 1 }"
+                >
+                  <CustomListItem>
+                    <RadioButton
+                      text="{examModel>ans}"
+                      groupName="Answers"
+                      select="onSingleSelect"
+                      valueState="{= ${examModel>isCorrect} ? 'Success' : 'None' }"
+                    />
+                  </CustomListItem>
+                </List>
+
+              </VBox>
+            </VBox>
+          </content>
+        </Panel>
+      </VBox>
+    </content>
+
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer />
+        <Button
+          text="{i18n>previousButton}"
+          press="onPreviousQuestion"
+          enabled="{examModel>/isPrev}"
+        />
+        <Button
+          text="{i18n>nextButton}"
+          press="onNextQuestion"
+          enabled="{examModel>/isNext}"
+        />
+        <Button
+          text="{i18n>submitExamButton}"
+          press="onSubmitExam"
+          type="Emphasized"
+        />
+      </Toolbar>
+    </footer>
+  </Page>
+</mvc:View>
