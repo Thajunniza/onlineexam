@@ -15,6 +15,8 @@ sap.ui.define(["sap/ui/model/json/JSONModel"], function (JSONModel, Util) {
     },
     totalQues: 0,
     examData: null,
+    results: [],
+    score:0
   };
 
   return JSONModel.extend("com.sap.shae.flp.plugins.homepage.chatModel", {
@@ -92,6 +94,16 @@ sap.ui.define(["sap/ui/model/json/JSONModel"], function (JSONModel, Util) {
       this.setProperty("/totalQues", totalQues);
     },
 
+     /**
+     * Set the total question.
+     *
+     * @returns {Integer} totalQues
+     */
+    setScore: function (score) {
+      this.setProperty("/score", score);
+    },
+
+
     /**
      * Returns the All Questions.
      *
@@ -102,5 +114,14 @@ sap.ui.define(["sap/ui/model/json/JSONModel"], function (JSONModel, Util) {
       const aAllQuestions = oData?.question;
       return aAllQuestions;
     },
+
+    /**
+     * Set the Results
+     *
+     * 
+     */
+    setResults: function (aResults) {
+      this.setProperty("/results", aResults);
+    }
   });
 });

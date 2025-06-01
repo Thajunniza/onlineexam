@@ -1,39 +1,74 @@
 <mvc:View
-    controllerName="com.sap.takeexam.controller.Result"
-    xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns:core="sap.ui.core">
-    
-    <Page title="{i18n>resultPageTitle}" showNavButton="true" navButtonPress="onNavBack">
-        <content>
-            <VBox alignItems="Center" justifyContent="Center" class="sapUiMediumMargin">
-                <Title text="{i18n>examCompletedTitle}" class="sapUiMediumMarginBottom"/>
-                
-                <Panel width="auto">
-                    <content>
-                        <VBox class="sapUiMediumMargin">
-                            <HBox justifyContent="SpaceBetween">
-                                <Label text="{i18n>scoreLabel}"/>
-                                <Text text="{/score}%" class="sapMObjectNumberLarge"/>
-                            </HBox>
-                            
-                            <HBox justifyContent="SpaceBetween" class="sapUiSmallMarginTop">
-                                <Label text="{i18n>correctAnswersLabel}"/>
-                                <Text text="{/correctAnswers}/{/totalQuestions}"/>
-                            </HBox>
-                            
-                            <ProgressIndicator
-                                percentValue="{/score}"
-                                displayValue="{/score}%"
-                                showValue="true"
-                                state="{= ${/score} >= 70 ? 'Success' : (${/score} >= 40 ? 'Warning' : 'Error') }"
-                                class="sapUiMediumMarginTop"/>
-                        </VBox>
-                    </content>
-                </Panel>
-                
-                <Button text="{i18n>returnHomeButton}" press="onReturnHome" class="sapUiMediumMarginTop" type="Emphasized"/>
+  controllerName="com.sap.takeexam.controller.Result"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+>
+  <Page
+    title="{i18n>resultPageTitle}"
+    showNavButton="false"
+  >
+    <content>
+      <VBox class="sapUiMediumMargin">
+        <Title
+          text="Quiz Summary"
+          level="H2"
+          class="sapUiSmallMarginBottom"
+        />
+        <Text
+          text="{= 'You got ' + ${examModel>/score} + ' out of ' + ${examModel>/totalQues} + ' questions right.' }"
+          class="sapUiSmallMarginBottom"
+        />
+
+        <List
+          items="{examModel>/results}"
+          headerText="Question-wise Feedback"
+          class="sapUiSmallMarginTop"
+        >
+          <CustomListItem>
+            <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+              <Text
+                text="{examModel>questionId}.{examModel>question}"
+                class="sapUiTinyMarginBottom"
+              />
+
+              <Text
+                text="Your answer(s):"
+                class="sapUiTinyMarginTop sapUiTinyMarginBottom"
+              />
+              <List
+                items="{examModel>selectedAnswers}"
+                mode="None"
+                showSeparators="None"
+              >
+                <CustomListItem>
+                  <Text text="{examModel>}" />
+                </CustomListItem>
+              </List>
+
+              <Text
+                text="Correct answer(s):"
+                class="sapUiTinyMarginTop sapUiTinyMarginBottom"
+              />
+              <List
+                items="{examModel>correctAnswers}"
+                mode="None"
+                showSeparators="None"
+              >
+                <CustomListItem>
+                  <Text text="{examModel>}" />
+                </CustomListItem>
+              </List>
+
+              <ObjectStatus
+                text="{= ${examModel>isCorrect} ? 'Correct' : 'Incorrect' }"
+                state="{= ${examModel>isCorrect} ? 'Success' : 'Error' }"
+                class="sapUiTinyMarginTop"
+              />
             </VBox>
-        </content>
-    </Page>
+          </CustomListItem>
+        </List>
+      </VBox>
+    </content>
+  </Page>
 </mvc:View>

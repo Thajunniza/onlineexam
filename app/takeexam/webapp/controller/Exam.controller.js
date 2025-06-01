@@ -75,6 +75,7 @@ sap.ui.define(
 
           aResults.push({
             questionId: q.ID,
+            question: q.ques,
             isCorrect: isCorrect,
             selectedAnswers: aSelected.map(a => a.ans),
             correctAnswers: aCorrect.map(a => a.ans)
@@ -82,10 +83,15 @@ sap.ui.define(
         });
 
         console.log("Submission Results:", aResults);
+        examModel.setResults(aResults);
+         const score = aResults.filter(r => r.isCorrect).length;
+         examModel.setScore(score);
 
         // Optional: show summary
         const correctCount = aResults.filter(r => r.isCorrect).length;
-        MessageBox.success(`You got ${correctCount} out of ${aAllQuestions.length} questions right.`);
+        // Navigate to exam page
+        util.navTo(this, "Result");
+       console.log(`You got ${correctCount} out of ${aAllQuestions.length} questions right.`);
       }
 
     
