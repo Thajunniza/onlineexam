@@ -44,8 +44,8 @@
                       text="{examModel>ans}"
                       select="onMultiSelect"
                       selected="{examModel>selected}"
-                      valueState="{= ${examModel>isCorrect} ? 'Success' : 'None' }"
-                    />
+                      valueState="{= ${examModel>isCorrect} &amp;&amp; ${examModel>/showAns} ? 'Success' : 'None' }"
+                  />
                   </CustomListItem>
                 </List>
 
@@ -60,7 +60,8 @@
                       text="{examModel>ans}"
                       groupName="Answers"
                       select="onSingleSelect"
-                      valueState="{= ${examModel>isCorrect} ? 'Success' : 'None' }"
+                      selected="{examModel>selected}"
+                      valueState="{= ${examModel>isCorrect} &amp;&amp; ${examModel>/showAns} ? 'Success' : 'None' }"
                     />
                   </CustomListItem>
                 </List>
@@ -75,6 +76,9 @@
     <footer>
       <Toolbar>
         <ToolbarSpacer />
+        <Button
+          text="Show Answer" press="onShowAnswer"
+        />
         <Button
           text="{i18n>previousButton}"
           press="onPreviousQuestion"

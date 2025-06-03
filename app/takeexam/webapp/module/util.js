@@ -1,44 +1,35 @@
-sap.ui.define([
-], function () {
+sap.ui.define([], function () {
   "use strict";
 
-
   /**
-    * Returns i18n text for the key
-    *
-    * @param {string} key for which i18n text is required
-    * @param {object} extensionApi Fiori Element V4 extension API
-    * @returns {string} text for the key
-    */
+   * Returns i18n text for the key
+   *
+   * @param {string} key for which i18n text is required
+   * @param {object} extensionApi Fiori Element V4 extension API
+   * @returns {string} text for the key
+   */
   function getI18nText(key, extensionApi) {
-    return extensionApi?.
-      getModel("i18n")?.
-      getResourceBundle()?.
-      getText(key);
+    return extensionApi?.getModel("i18n")?.getResourceBundle()?.getText(key);
   }
 
   /**
-    * Navigate to Route
-    *
-    * @param {object} me current Context
-    * @param {string} sTarget The target name defined in the manifest
-    */
-  function navTo(me, sTarget,oProp={}) {
-    me?.
-      getOwnerComponent()?.
-      getRouter()?.
-      navTo(sTarget,oProp);
+   * Navigate to Route
+   *
+   * @param {object} me current Context
+   * @param {string} sTarget The target name defined in the manifest
+   */
+  function navTo(me, sTarget, oProp = {}) {
+    me?.getOwnerComponent()?.getRouter()?.navTo(sTarget, oProp);
   }
 
-
   /**
-    *Get the Target key for a Common Action 
-    *
-    * @param {object} oEvent Action event
-    * @returns {string} text for the key
-    */
+   *Get the Target key for a Common Action
+   *
+   * @param {object} oEvent Action event
+   * @returns {string} text for the key
+   */
   function getActionTargetData(oEvent) {
-    return oEvent?.getSource()?.data("target")
+    return oEvent?.getSource()?.data("target");
   }
 
   /**
@@ -48,23 +39,22 @@ sap.ui.define([
    * @returns {object} Model object
    */
   function getModel(me, modelName) {
-    return me?.
-      getModel(modelName);
+    return me?.getModel(modelName);
   }
 
   /**
-    * Executes bounded custom actions with EditFlow invokeAction - applies busy
-    * @param {string} sUrl API URL
-    * @param {string} callType GET/POST
-    * @param {boolean} is async
-    * @returns {Promise} response of the api
-    */
+   * Executes bounded custom actions with EditFlow invokeAction - applies busy
+   * @param {string} sUrl API URL
+   * @param {string} callType GET/POST
+   * @param {boolean} is async
+   * @returns {Promise} response of the api
+   */
   async function executeAPI(sUrl, callType, data) {
     return new Promise(function (resolve, reject) {
       $.ajax({
         url: sUrl,
         type: callType,
-        contentType: 'application/json',
+        contentType: "application/json",
         data: JSON.stringify(data),
         async: true, // Make the AJAX call synchronous
         success: function (data) {
@@ -72,36 +62,30 @@ sap.ui.define([
         },
         error: function (xhr, status, error) {
           reject(error);
-        }
+        },
       });
     });
   }
 
-
   /**
-    * Returns the object containing application configuration from
-    * the application descriptor.
-    *
-    * @param {object} component App Component
-    * @returns {object} configuration
-    */
+   * Returns the object containing application configuration from
+   * the application descriptor.
+   *
+   * @param {object} component App Component
+   * @returns {object} configuration
+   */
   function getAppConfig(component) {
-    return component?.
-      getMetadata()?.
-      getManifestEntry("sap.ui5")?.config;
+    return component?.getMetadata()?.getManifestEntry("sap.ui5")?.config;
   }
 
   /**
-    * Returns reference to a specific component instance by its ID.
-    *
-    * @param {object} me App Component
-    * @returns {string} Root ID
-    */
+   * Returns reference to a specific component instance by its ID.
+   *
+   * @param {object} me App Component
+   * @returns {string} Root ID
+   */
   function getRootComponentId(me) {
-    return me?.
-      getOwnerComponent()?.
-      getRootControl()?.
-      getId();
+    return me?.getOwnerComponent()?.getRootControl()?.getId();
   }
 
   /**
@@ -115,12 +99,10 @@ sap.ui.define([
     const sRootId = getRootComponentId(me);
     const sInfoId = `${sRootId}--${sId}`;
     return sap.ui.getCore()?.byId(sInfoId);
-
   }
 
-
   /**
-   * Executes unbounded custom actions 
+   * Executes unbounded custom actions
    * @param {object} me
    * @param {object} model of the onboarding
    * @param {string} action - action service path
@@ -128,23 +110,32 @@ sap.ui.define([
    * @returns {Promise} for the action context
    */
   async function executeUnBoundAction(model, action, parameters = {}) {
-    const oBinding = model.bindContext(action, null, [], [], { $$getKeepAliveContext: true });
-    Object.entries(parameters)
-      .forEach(([param, value]) => {
-        oBinding.setParameter(param, value);
-      });
+    const oBinding = model.bindContext(action, null, [], [], {
+      $$getKeepAliveContext: true,
+    });
+    Object.entries(parameters).forEach(([param, value]) => {
+      oBinding.setParameter(param, value);
+    });
     return new Promise(function (resolve, reject) {
-      oBinding.execute()
+      oBinding
+        .execute()
         .then(function (oContext) {
           const responseData = oBinding.getBoundContext().getObject();
           resolve(responseData);
-        }).catch(error => {
+        })
+        .catch((error) => {
           reject(error);
         });
     });
   }
 
-
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
   return {
     getI18nText,
@@ -155,6 +146,7 @@ sap.ui.define([
     getCoreId,
     executeUnBoundAction,
     getAppConfig,
-    getRootComponentId
-  }
+    getRootComponentId,
+    shuffleArray
+  };
 });

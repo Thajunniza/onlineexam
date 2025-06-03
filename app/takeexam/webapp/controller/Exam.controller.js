@@ -92,6 +92,12 @@ sap.ui.define(
         // Navigate to exam page
         util.navTo(this, "Result");
        console.log(`You got ${correctCount} out of ${aAllQuestions.length} questions right.`);
+      },
+
+      onShowAnswer: function (){
+        const oComponent = this.getOwnerComponent();
+        const examModel = oComponent.getModel("examModel");
+        examModel.toggleShowAns();
       }
 
     

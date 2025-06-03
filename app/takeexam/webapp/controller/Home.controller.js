@@ -4,7 +4,7 @@ sap.ui.define(
     "com/sap/takeexam/module/util",
     "com/sap/takeexam/module/service",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
+    "sap/ui/model/FilterOperator",
   ],
   (Controller, util, service, Filter, FilterOperator) => {
     "use strict";
@@ -18,7 +18,7 @@ sap.ui.define(
         const oView = this.getView();
         const oComponent = this.getOwnerComponent();
         const examModel = util.getModel(oComponent, "examModel");
-        this.getView().setModel(examModel,"examModel");
+        this.getView().setModel(examModel, "examModel");
 
         const currentExam = examModel.getCurrentExam();
 
@@ -40,9 +40,22 @@ sap.ui.define(
         const sEntity = `/Exams`;
         const aFilter = [new Filter("code", FilterOperator.EQ, sExam)];
         const sExpand = `question($expand=answers)`;
-        const aData = await service.getEntityData(this, null, sEntity,sExpand, aFilter);
+        const aData = await service.getEntityData(
+          this,
+          null,
+          sEntity,
+          sExpand,
+          aFilter
+        );
         const oData = aData[0];
         examModel.setExamData(oData);
+        let aQues = oData?.question;
+        oData.question = util.shuffleArray(aQues);
+        aQues = oData.question.map((ques, index) => {
+          ques.ID = index + 1;
+          return ques ;
+        });
+        oData.question = aQues;
         const totalQues = oData?.question?.length;
         examModel.setTotalQues(totalQues);
       },

@@ -1,1 +1,6 @@
 /* Enter your custom styles here */
+
+.sapMText {
+    font-size: 1.25rem !important;
+    font-weight: bold !important;
+}
